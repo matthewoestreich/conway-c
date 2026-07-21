@@ -25,7 +25,7 @@ void conway_clicked(Conway* conway, const Vector2* clicked_pos) {
 void conway_update(Conway* conway, const float delta_time) {
     conway->timer -= delta_time;
 
-    if (conway->timer > 0.0) {
+    if (conway->timer > 0.0f) {
         return;
     }
 
