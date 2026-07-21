@@ -1,0 +1,7 @@
+CompileFlags:
+  Add:
+    - -I../vendor/raylib_6_0/include
+    - -I../include
+Diagnostics:
+  MissingIncludes: Strict
+  UnusedIncludes: Strict
