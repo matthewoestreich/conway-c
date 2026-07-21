@@ -2,6 +2,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #include "grid.h"
 #include "raylib.h"
@@ -16,6 +17,8 @@ Conway conway_new(float update_interval, Grid* grid) {
 void conway_clicked(Conway* conway, const Vector2* clicked_pos) {
     Cell* cell = grid_cell(conway->grid, (uint32_t)clicked_pos->x,
                            (uint32_t)clicked_pos->y);
+
+    printf("clicked on cell at pos : x= %d, y= %d\n", cell->x, cell->y);
 
     if (cell != NULL) {
         cell->alive = !cell->alive;
