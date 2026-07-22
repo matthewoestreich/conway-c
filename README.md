@@ -10,7 +10,7 @@
 
 # Build
 
-**Only works on MacOS as of now**
+**Only works on MacOS as of now** (feel free to download the correct Raylib version and modify the build script, though)
 
 ```bash
 # From project root
