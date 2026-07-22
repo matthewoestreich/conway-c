@@ -33,7 +33,7 @@ $ ./build/main
   - Our grid uses 'cell bit manipulation' to handle calculating future generations.
   - This means we only need to allocate once, not every single frame.
   - Each cell is an `unsigned char` with only the first two bits being used.
-    - If a bit is `0` it means that cell is dead - `1` means alive.
+    - If a bit is `0` it means that cell is dead; `1` means alive.
     - The first bit represents the current generation of that cell.
     - The second bit represents the next generation of that cell.
 
