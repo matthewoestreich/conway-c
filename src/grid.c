@@ -25,7 +25,7 @@ static void grid_init_cells(Grid* g) {
     for (size_t y = 0; y < g->rows; ++y) {
         for (size_t x = 0; x < g->cols; ++x) {
             size_t index = (y * g->cols) + x;
-            Cell c = cell_new(false);  // {.alive = false};
+            Cell c = cell_new(false);
             g->cells[index] = c;
         }
     }
