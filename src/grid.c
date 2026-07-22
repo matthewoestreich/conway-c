@@ -10,7 +10,6 @@
 Cell cell_new(bool is_alive) { return (Cell)is_alive; }
 
 void cell_set_curr_gen_alive(Cell* cell, bool is_alive) {
-    // Clear first bit then XOR
     *cell = (*cell & CELL_MASK_CLEAR_CURR) | is_alive;
 }
 
