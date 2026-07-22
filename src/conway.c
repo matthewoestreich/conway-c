@@ -1,9 +1,7 @@
 #include "conway.h"
 
-#include <assert.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
 
 #include "grid.h"
 #include "raylib.h"
@@ -29,7 +27,7 @@ void conway_update(Conway* conway, const float delta_time) {
 
     for (size_t i = 0; i < conway->grid->size; ++i) {
         Cell* cell = &conway->grid->cells[i];
-        // Reads from 'current gen' bit.
+        // IMPORTANT : Reads from current generation bit.
         uint32_t alive_neighbors = grid_alive_neighbors_len(conway->grid, i);
 
         if (cell_is_curr_gen_alive(cell)) {
@@ -37,19 +35,23 @@ void conway_update(Conway* conway, const float delta_time) {
             bool survives = alive_neighbors == 2 || alive_neighbors == 3;
             // IMPORTANT : set the next generation bit!!!
             cell_set_next_gen_alive(cell, survives);
-        } else if (alive_neighbors == 3) {
-            // Here we can assume the cell is not alive
-            // If a dead celll has 3 alive neighbors, it can be born again.
-            cell_set_next_gen_alive(cell, true);
+        } else {
+            // Within this 'else' block we know the cell is dead.
+            if (alive_neighbors == 3) {
+                // If a dead celll has 3 alive neighbors, it can be born again.
+                // IMPORTANT : set the next generation bit!!!
+                cell_set_next_gen_alive(cell, true);
+            }
         }
     }
 
+    // Advance eacch cell to the next generation (shift second bit into first
+    // bit position)
     for (size_t i = 0; i < conway->grid->size; ++i) {
-        Cell* cell = &conway->grid->cells[i];
-        cell_advance_gen(cell);
+        cell_advance_gen(&conway->grid->cells[i]);
     }
 
-    // Since we return early above if 'conway->timer > 0.0f' we can
+    // Since we return early above (if 'conway->timer > 0.0f') we can
     // safely assume we need to reset our timer here.
     conway->timer = conway->update_interval;
 }

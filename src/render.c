@@ -1,8 +1,8 @@
 #include "render.h"
 
 #include <math.h>
+#include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
 
 #include "conway.h"
 #include "grid.h"
