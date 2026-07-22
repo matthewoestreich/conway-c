@@ -35,7 +35,7 @@ Grid* grid_new(uint32_t rows, uint32_t cols);
 
 Cell* grid_cell_from_coords(Grid* g, uint32_t x, uint32_t y);
 
-Vector2 grid_get_cell_pos_from_raw_index(Grid* g, size_t raw_index);
+Vector2 grid_get_cell_coords_from_raw_index(Grid* g, size_t raw_index);
 
 void grid_drop(Grid* g);
 

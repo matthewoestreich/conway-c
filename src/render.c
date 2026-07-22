@@ -66,7 +66,7 @@ void renderer_draw_cells(Renderer* renderer, Grid* grid) {
         Cell* c = &grid->cells[i];
 
         Color color = cell_is_curr_gen_alive(c) ? WHITE : BLACK;
-        Vector2 cell_pos = grid_get_cell_pos_from_raw_index(grid, i);
+        Vector2 cell_pos = grid_get_cell_coords_from_raw_index(grid, i);
         Vector2 pos = viewport_grid_to_world(&renderer->viewport, &cell_pos);
 
         DrawRectangle((int)pos.x, (int)pos.y,

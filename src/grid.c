@@ -62,7 +62,7 @@ static size_t grid_index(const Grid* g, uint32_t x, uint32_t y) {
     return ((size_t)y * g->cols) + x;
 }
 
-Vector2 grid_get_cell_pos_from_raw_index(Grid* g, size_t raw_index) {
+Vector2 grid_get_cell_coords_from_raw_index(Grid* g, size_t raw_index) {
     size_t width = (size_t)g->cols;
     size_t x = raw_index % width;
     size_t y = raw_index / width;
@@ -85,7 +85,7 @@ void grid_drop(Grid* g) {
 
 /// Gets the CURRENT GEN alive neighbors
 uint32_t grid_alive_neighbors_len(Grid* g, const size_t raw_cell_index) {
-    Vector2 cell_pos = grid_get_cell_pos_from_raw_index(g, raw_cell_index);
+    Vector2 cell_pos = grid_get_cell_coords_from_raw_index(g, raw_cell_index);
     int pos_x = cell_pos.x;
     int pos_y = cell_pos.y;
 
