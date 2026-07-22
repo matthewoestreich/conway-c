@@ -13,14 +13,14 @@ Cell cell_new(bool is_alive) { return (Cell)is_alive; }
 
 void cell_set_curr_gen_alive(Cell* cell, bool is_alive) {
     // Clear first bit then XOR
-    *cell = (*cell & 0b11111110) | is_alive;
+    *cell = (*cell & CELL_MASK_CLEAR_CURR) | is_alive;
 }
 
 void cell_set_next_gen_alive(Cell* cell, bool is_alive) {
-    *cell = (*cell & 0b11111101) | (is_alive << 1);
+    *cell = (*cell & CELL_MASK_CLEAR_NEXT) | (is_alive << 1);
 }
 
-bool cell_is_curr_gen_alive(const Cell* c) { return *c & 0b00000001; }
+bool cell_is_curr_gen_alive(const Cell* c) { return *c & CELL_MASK_READ_CURR; }
 
 void cell_advance_gen(Cell* cell) { *cell >>= 1; }
 

@@ -42,4 +42,4 @@ Renderer renderer_new(Viewport vp);
 
 void renderer_draw(Renderer* renderer, Conway* conway);
 
-#endif  // RENDER_IMPL
+#endif  // RENDER_H

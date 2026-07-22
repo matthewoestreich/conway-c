@@ -17,4 +17,4 @@ Cell* conway_clicked(Conway* conway, const Vector2 clicked_pos);
 
 void conway_update(Conway* conway, const float delta_time);
 
-#endif  // CONWAY_IMPL
+#endif  // CONWAY_H

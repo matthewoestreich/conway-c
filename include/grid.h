@@ -7,13 +7,7 @@
 
 #include "raylib.h"
 
-// typedef struct {
-//     bool alive;
-//     // uint32_t x;
-//     // uint32_t y;
-// } Cell;
-
-// Clearing Masks (Used to set a bit to 0)
+// Clearing Masks (Used to set a bit while leaving other bits alone)
 #define CELL_MASK_CLEAR_CURR 0b11111110  // Current gen
 #define CELL_MASK_CLEAR_NEXT 0b11111101  // Next gen
 // Reading Masks (Used to isolate a bit)
@@ -49,4 +43,4 @@ void grid_drop(Grid* g);
 
 uint32_t grid_alive_neighbors_len(Grid* g, const size_t raw_cell_index);
 
-#endif  // GRID_HEADER
+#endif  // GRID_H

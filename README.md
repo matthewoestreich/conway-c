@@ -14,7 +14,11 @@
 
 ```bash
 # From project root
-$ ./build.sh && ./build/main
+
+# Build project
+$ ./build.sh
+# Run executable
+$ ./build/main
 ```
 
 # Usage
