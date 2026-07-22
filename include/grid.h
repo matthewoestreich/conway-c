@@ -7,12 +7,10 @@
 
 #include "raylib.h"
 
-// Clearing Masks (Used to set a bit while leaving other bits alone)
 #define CELL_MASK_CLEAR_CURR 0b11111110  // Current gen
 #define CELL_MASK_CLEAR_NEXT 0b11111101  // Next gen
-// Reading Masks (Used to isolate a bit)
-#define CELL_MASK_READ_CURR 0b00000001  // Current gen
-#define CELL_MASK_READ_NEXT 0b00000010  // Next gen
+#define CELL_MASK_READ_CURR 0b00000001   // Current gen
+#define CELL_MASK_READ_NEXT 0b00000010   // Next gen
 
 typedef unsigned char Cell;
 
