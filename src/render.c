@@ -65,9 +65,9 @@ void renderer_draw_cells(Renderer* renderer, Grid* grid) {
     for (size_t i = 0; i < grid->size; ++i) {
         Cell* c = &grid->cells[i];
 
-        Color color = c->alive ? WHITE : BLACK;
-        Vector2 c_pos = (Vector2){.x = c->x, .y = c->y};
-        Vector2 pos = viewport_grid_to_world(&renderer->viewport, &c_pos);
+        Color color = cell_is_curr_gen_alive(c) ? WHITE : BLACK;
+        Vector2 cell_pos = grid_get_cell_pos_from_raw_index(grid, i);
+        Vector2 pos = viewport_grid_to_world(&renderer->viewport, &cell_pos);
 
         DrawRectangle((int)pos.x, (int)pos.y,
                       (int)renderer->viewport.cell_size.x,
@@ -75,7 +75,7 @@ void renderer_draw_cells(Renderer* renderer, Grid* grid) {
     }
 }
 
-void renderer_draw_grid_border(Renderer* renderer, Grid* grid) {
+void renderer_draw_grid_border(Renderer* renderer) {
     float thickness = 1.0f;
     Color line_color = GRAY;
     float width =
@@ -113,7 +113,6 @@ void renderer_draw_grid_border(Renderer* renderer, Grid* grid) {
 }
 
 void renderer_draw(Renderer* renderer, Conway* conway) {
-    Grid* grid = conway->grid;
-    renderer_draw_cells(renderer, grid);
-    renderer_draw_grid_border(renderer, grid);
+    renderer_draw_cells(renderer, conway->grid);
+    renderer_draw_grid_border(renderer);
 }

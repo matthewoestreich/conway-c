@@ -27,27 +27,28 @@ void conway_update(Conway* conway, const float delta_time) {
         return;
     }
 
-    Grid* next_grid = grid_clone(conway->grid);
-    assert(next_grid != NULL);
+    for (size_t i = 0; i < conway->grid->size; ++i) {
+        Cell* cell = &conway->grid->cells[i];
+        // Reads from 'current gen' bit.
+        uint32_t alive_neighbors = grid_alive_neighbors_len(conway->grid, i);
 
-    for (size_t i = 0; i < next_grid->size; ++i) {
-        Cell* cell = &next_grid->cells[i];
-        Vector2 cell_pos = {.x = (float)cell->x, .y = (float)cell->y};
-
-        uint32_t alive_neighbors =
-            grid_alive_neighbors_len(conway->grid, cell_pos);
-
-        if (cell->alive) {
-            cell->alive = alive_neighbors == 2 || alive_neighbors == 3;
+        if (cell_is_curr_gen_alive(cell)) {
+            // If a cell that is alive has 2 or 3 alive neighbors it survives.
+            bool survives = alive_neighbors == 2 || alive_neighbors == 3;
+            // IMPORTANT : set the next generation bit!!!
+            cell_set_next_gen_alive(cell, survives);
         } else if (alive_neighbors == 3) {
             // Here we can assume the cell is not alive
-            // If a dead celll has 3 alive neighbors, we can mark the cell as
-            // alive.
-            cell->alive = true;
+            // If a dead celll has 3 alive neighbors, it can be born again.
+            cell_set_next_gen_alive(cell, true);
         }
     }
 
-    conway->grid = next_grid;
+    for (size_t i = 0; i < conway->grid->size; ++i) {
+        Cell* cell = &conway->grid->cells[i];
+        cell_advance_gen(cell);
+    }
+
     // Since we return early above if 'conway->timer > 0.0f' we can
     // safely assume we need to reset our timer here.
     conway->timer = conway->update_interval;

@@ -56,8 +56,8 @@ int main() {
                 Cell* cell = conway_clicked(&conway, maybe_pos.value);
                 if (cell != NULL) {
                     is_dragging = true;
-                    is_drawing = !cell->alive;
-                    cell->alive = is_drawing;
+                    is_drawing = !cell_is_curr_gen_alive(cell);
+                    cell_set_curr_gen_alive(cell, is_drawing);
                 }
             }
         }
@@ -69,7 +69,7 @@ int main() {
             if (maybe_pos.is_some) {
                 Cell* cell = conway_clicked(&conway, maybe_pos.value);
                 if (cell != NULL) {
-                    cell->alive = is_drawing;
+                    cell_set_curr_gen_alive(cell, is_drawing);
                 }
             }
         }

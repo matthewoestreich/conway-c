@@ -7,11 +7,30 @@
 
 #include "raylib.h"
 
-typedef struct {
-    bool alive;
-    uint32_t x;
-    uint32_t y;
-} Cell;
+// typedef struct {
+//     bool alive;
+//     // uint32_t x;
+//     // uint32_t y;
+// } Cell;
+
+// Clearing Masks (Used to set a bit to 0)
+#define CELL_MASK_CLEAR_CURR 0b11111110  // Current gen
+#define CELL_MASK_CLEAR_NEXT 0b11111101  // Next gen
+// Reading Masks (Used to isolate a bit)
+#define CELL_MASK_READ_CURR 0b00000001  // Current gen
+#define CELL_MASK_READ_NEXT 0b00000010  // Next gen
+
+typedef unsigned char Cell;
+
+Cell cell_new(bool is_alive);
+
+void cell_set_curr_gen_alive(Cell* cell, bool is_alive);
+
+void cell_set_next_gen_alive(Cell* cell, bool is_alive);
+
+bool cell_is_curr_gen_alive(const Cell* c);
+
+void cell_advance_gen(Cell* c);
 
 typedef struct {
     uint32_t rows;
@@ -22,20 +41,12 @@ typedef struct {
 
 Grid* grid_new(uint32_t rows, uint32_t cols);
 
-size_t grid_index(const Grid* g, uint32_t x, uint32_t y);
-
 Cell* grid_cell_from_coords(Grid* g, uint32_t x, uint32_t y);
 
-Cell* grid_cell_from_world_pos(Grid* g, Vector2 world_pos);
+Vector2 grid_get_cell_pos_from_raw_index(Grid* g, size_t raw_index);
 
 void grid_drop(Grid* g);
 
-void cell_print(const Cell* c);
-
-void grid_print(const Grid* g);
-
-Grid* grid_clone(const Grid* g);
-
-uint32_t grid_alive_neighbors_len(Grid* g, const Vector2 position);
+uint32_t grid_alive_neighbors_len(Grid* g, const size_t raw_cell_index);
 
 #endif  // GRID_HEADER
