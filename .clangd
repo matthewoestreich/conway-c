@@ -2,6 +2,15 @@ CompileFlags:
   Add:
     - -I../vendor/raylib_6_0/include
     - -I../include
+    - -Wunused-variable
+    - -Wunused-parameter
+    - -Wunused-function
+    - -Wunused-member-function
 Diagnostics:
+  # This makes sure the unused variables are treated as traditional
+  # warnings so Neovim safely triggers the diagnostic engine
+  ClangTidy:
+    CheckOptions:
+      bugprone-unused-return-value: true
   MissingIncludes: Strict
   UnusedIncludes: Strict
