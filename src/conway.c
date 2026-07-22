@@ -1,5 +1,6 @@
 #include "conway.h"
 
+#include <assert.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -8,21 +9,15 @@
 #include "raylib.h"
 
 Conway conway_new(float update_interval, Grid* grid) {
-    Conway cw = {.update_interval = update_interval,
-                 .timer = update_interval,
-                 .grid = grid};
-    return cw;
+    return (Conway){.update_interval = update_interval,
+                    .timer = update_interval,
+                    .grid = grid};
 }
 
-void conway_clicked(Conway* conway, const Vector2* clicked_pos) {
-    Cell* cell = grid_cell(conway->grid, (uint32_t)clicked_pos->x,
-                           (uint32_t)clicked_pos->y);
-
-    printf("clicked on cell at pos : x= %d, y= %d\n", cell->x, cell->y);
-
-    if (cell != NULL) {
-        cell->alive = !cell->alive;
-    }
+Cell* conway_clicked(Conway* conway, const Vector2 clicked_pos) {
+    uint32_t x = (uint32_t)clicked_pos.x;
+    uint32_t y = (uint32_t)clicked_pos.y;
+    return grid_cell_from_coords(conway->grid, x, y);
 }
 
 void conway_update(Conway* conway, const float delta_time) {
@@ -33,10 +28,11 @@ void conway_update(Conway* conway, const float delta_time) {
     }
 
     Grid* next_grid = grid_clone(conway->grid);
+    assert(next_grid != NULL);
 
     for (size_t i = 0; i < next_grid->size; ++i) {
-        Cell* cell = &conway->grid->cells[i];
-        Vector2 cell_pos = (Vector2){.x = (float)cell->x, .y = (float)cell->y};
+        Cell* cell = &next_grid->cells[i];
+        Vector2 cell_pos = {.x = (float)cell->x, .y = (float)cell->y};
 
         uint32_t alive_neighbors =
             grid_alive_neighbors_len(conway->grid, cell_pos);
@@ -52,5 +48,7 @@ void conway_update(Conway* conway, const float delta_time) {
     }
 
     conway->grid = next_grid;
+    // Since we return early above if 'conway->timer > 0.0f' we can
+    // safely assume we need to reset our timer here.
     conway->timer = conway->update_interval;
 }

@@ -6,6 +6,7 @@
 
 #include "conway.h"
 #include "grid.h"
+#include "options.h"
 #include "raylib.h"
 #include "render.h"
 
@@ -19,20 +20,65 @@
 #define UPDATE_INTERVAL_SECS 0.3  // 1.0 == 1 second
 
 int main() {
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello, Raylib!");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Conway");
     SetTargetFPS(FPS);
 
-    Viewport vp =
-        viewport_new(0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, COLS, ROWS);
+    Renderer renderer = renderer_new(
+        viewport_new(0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, COLS, ROWS));
 
-    Renderer renderer = renderer_new(vp);
+    Conway conway = conway_new(UPDATE_INTERVAL_SECS, grid_new(ROWS, COLS));
 
-    Grid* grid = grid_new(ROWS, COLS);
-    Conway conway = conway_new(UPDATE_INTERVAL_SECS, grid);
+    // App state
+    char title_buffer[128];
+    bool is_paused = true;
+    bool is_dragging = false;
+    bool is_drawing = false;
 
     while (!WindowShouldClose()) {
         float delta_time = GetFrameTime();
-        conway_update(&conway, delta_time);
+
+        if (is_paused == true) {
+            sprintf(title_buffer, "Conway | PAUSED");
+        } else {
+            sprintf(title_buffer, "Conway");
+            conway_update(&conway, delta_time);
+        }
+
+        if (IsKeyPressed(KEY_SPACE)) {
+            is_paused = !is_paused;
+        }
+
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            OptionVector2 maybe_pos =
+                viewport_world_to_cell(&renderer.viewport, GetMousePosition());
+
+            if (maybe_pos.is_some) {
+                Cell* cell = conway_clicked(&conway, maybe_pos.value);
+                if (cell != NULL) {
+                    is_dragging = true;
+                    is_drawing = !cell->alive;
+                    cell->alive = is_drawing;
+                }
+            }
+        }
+
+        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && is_dragging) {
+            OptionVector2 maybe_pos =
+                viewport_world_to_cell(&renderer.viewport, GetMousePosition());
+
+            if (maybe_pos.is_some) {
+                Cell* cell = conway_clicked(&conway, maybe_pos.value);
+                if (cell != NULL) {
+                    cell->alive = is_drawing;
+                }
+            }
+        }
+
+        if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
+            is_dragging = false;
+        }
+
+        SetWindowTitle(title_buffer);
 
         BeginDrawing();
         ClearBackground(BLACK);
@@ -43,7 +89,7 @@ int main() {
     }
 
     CloseWindow();
-    grid_drop(grid);
+    grid_drop(conway.grid);
 
     return 0;
 }

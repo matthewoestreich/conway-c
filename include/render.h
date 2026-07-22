@@ -1,14 +1,15 @@
-#ifndef RENDER_IMPL
-#define RENDER_IMPL
+#ifndef RENDER_H
+#define RENDER_H
 
 #include <stdint.h>
 
 #include "conway.h"
+#include "options.h"
 #include "raylib.h"
 
-// ------------------------------------------------------------------------------------
-// -------------- Viewport ------------
-// ------------------------------------------------------------------------------------
+// ------------------------------------
+// ----------- Viewport ---------------
+// ------------------------------------
 
 typedef struct {
     int32_t x;
@@ -25,13 +26,13 @@ Viewport viewport_new(int32_t x, int32_t y, int32_t width, int32_t height,
 
 Vector2 viewport_grid_to_world(Viewport* vp, Vector2* grid_pos);
 
-Vector2 viewport_world_to_cell(Viewport* vp, Vector2* world_pos);
+OptionVector2 viewport_world_to_cell(Viewport* vp, Vector2 world_pos);
 
 bool viewport_is_within_bounds(Viewport* vp, Vector2* pos);
 
-// ------------------------------------------------------------------------------------
-// -------------- Renderer ------------
-// ------------------------------------------------------------------------------------
+// ------------------------------------
+// ----------- Renderer ---------------
+// ------------------------------------
 
 typedef struct {
     Viewport viewport;

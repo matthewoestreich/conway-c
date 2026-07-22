@@ -46,12 +46,21 @@ size_t grid_index(const Grid* g, uint32_t x, uint32_t y) {
     return ((size_t)y * g->cols) + x;
 }
 
-Cell* grid_cell(Grid* g, uint32_t x, uint32_t y) {
+Cell* grid_cell_from_coords(Grid* g, uint32_t x, uint32_t y) {
     if (g == NULL || x >= g->cols || y >= g->rows) {
         return NULL;
     }
     size_t idx = grid_index(g, x, y);
     return &g->cells[idx];
+}
+
+Cell* grid_cell_from_world_pos(Grid* g, Vector2 world_pos) {
+    if (g == NULL || (world_pos.x < 0.0f || world_pos.y < 0.0f)) {
+        return NULL;
+    }
+    uint32_t x = (uint32_t)world_pos.x;
+    uint32_t y = (uint32_t)world_pos.y;
+    return grid_cell_from_coords(g, x, y);
 }
 
 void grid_drop(Grid* g) {
@@ -97,7 +106,7 @@ uint32_t grid_alive_neighbors_len(Grid* g, const Vector2 position) {
                 continue;
             }
 
-            Cell* cell = grid_cell(g, (uint32_t)x, (uint32_t)y);
+            Cell* cell = grid_cell_from_coords(g, (uint32_t)x, (uint32_t)y);
             if (cell != NULL && cell->alive) {
                 alive_neighbors++;
             }

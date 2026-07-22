@@ -1,7 +1,8 @@
-#ifndef CONWAY_IMPL
-#define CONWAY_IMPL
+#ifndef CONWAY_H
+#define CONWAY_H
 
 #include "grid.h"
+#include "options.h"
 #include "raylib.h"
 
 typedef struct {
@@ -12,7 +13,7 @@ typedef struct {
 
 Conway conway_new(float update_interval, Grid* grid);
 
-void conway_clicked(Conway* conway, const Vector2* clicked_pos);
+Cell* conway_clicked(Conway* conway, const Vector2 clicked_pos);
 
 void conway_update(Conway* conway, const float delta_time);
 

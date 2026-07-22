@@ -1,5 +1,5 @@
-#ifndef GRID_IMPL
-#define GRID_IMPL
+#ifndef GRID_H
+#define GRID_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -24,7 +24,9 @@ Grid* grid_new(uint32_t rows, uint32_t cols);
 
 size_t grid_index(const Grid* g, uint32_t x, uint32_t y);
 
-Cell* grid_cell(Grid* g, uint32_t x, uint32_t y);
+Cell* grid_cell_from_coords(Grid* g, uint32_t x, uint32_t y);
+
+Cell* grid_cell_from_world_pos(Grid* g, Vector2 world_pos);
 
 void grid_drop(Grid* g);
 
