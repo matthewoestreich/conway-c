@@ -15,25 +15,21 @@
 
 Viewport viewport_new(int32_t x, int32_t y, int32_t width, int32_t height,
                       uint32_t cols, uint32_t rows) {
-    Viewport vp;
-    vp.x = x;
-    vp.y = y;
-    vp.width = width;
-    vp.height = height;
-    vp.cols = cols;
-    vp.rows = rows;
-
-    vp.cell_size.x = width / (float)cols;
-    vp.cell_size.y = height / (float)rows;
-
-    return vp;
+    return (Viewport){
+        .x = x,
+        .y = y,
+        .width = width,
+        .height = height,
+        .cols = cols,
+        .rows = rows,
+        .cell_size =
+            (Vector2){.x = width / (float)cols, .y = height / (float)rows},
+    };
 }
 
 Vector2 viewport_grid_to_world(Viewport* vp, Vector2* grid_pos) {
-    Vector2 world_pos;
-    world_pos.x = vp->x + (grid_pos->x * vp->cell_size.x);
-    world_pos.y = vp->y + (grid_pos->y * vp->cell_size.y);
-    return world_pos;
+    return (Vector2){.x = vp->x + (grid_pos->x * vp->cell_size.x),
+                     .y = vp->y + (grid_pos->y * vp->cell_size.y)};
 }
 
 OptionVector2 viewport_world_to_cell(Viewport* vp, Vector2 world_pos) {
