@@ -6,5 +6,7 @@ setup:
 build:
 	cmake --build build
 
+.SILENT:
+
 clean:
 	rm -rf build

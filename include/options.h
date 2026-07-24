@@ -14,4 +14,4 @@ typedef struct {
 #define SOME_VECTOR2(...) \
     ((OptionVector2){.is_some = true, .value = (__VA_ARGS__)})
 
-#endif  // !OPTIONS_H
+#endif  // OPTIONS_H

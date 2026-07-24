@@ -4,8 +4,8 @@ Index:
 CompileFlags:
   CompilationDatabase: "build"
   Add:
-    - -I../vendor/raylib_6_0/include
-    - -I../include
+    - -I./vendor/raylib_6_0/include
+    - -I./include
     - -Wunused-variable
     - -Wunused-parameter
     - -Wunused-function
