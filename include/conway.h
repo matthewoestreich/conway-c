@@ -12,6 +12,8 @@ typedef struct {
 
 Conway conway_new(float update_interval, Grid* grid);
 
+void conway_reset(Conway* conway);
+
 Cell* conway_clicked(Conway* conway, const Vector2 clicked_pos);
 
 void conway_update(Conway* conway, const float delta_time);

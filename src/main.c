@@ -29,19 +29,32 @@ int main() {
     bool is_paused = true;
     bool is_dragging = false;
     bool is_drawing = false;
+    bool is_fast_forward = false;
+    int fast_forward_multiplier = 5;
+    float stable_delta_time_fast_forward = 0.01666667;
 
     while (!WindowShouldClose()) {
-        float delta_time = GetFrameTime();
-
-        if (is_paused == true) {
-            sprintf(title_buffer, "Conway | PAUSED");
-        } else {
-            sprintf(title_buffer, "Conway");
-            conway_update(&conway, delta_time);
+        if (IsKeyPressed(KEY_R)) {
+            conway_reset(&conway);
+        } else if (IsKeyPressed(KEY_F)) {
+            if (!is_paused) {
+                is_fast_forward = !is_fast_forward;
+            }
+        } else if (IsKeyPressed(KEY_SPACE)) {
+            is_paused = !is_paused;
         }
 
-        if (IsKeyPressed(KEY_SPACE)) {
-            is_paused = !is_paused;
+        if (is_paused) {
+            sprintf(title_buffer, "Conway | PAUSED");
+        } else if (is_fast_forward) {
+            sprintf(title_buffer, "Conway | >> FF x%d >>",
+                    fast_forward_multiplier);
+            for (int i = 0; i < fast_forward_multiplier; ++i) {
+                conway_update(&conway, stable_delta_time_fast_forward);
+            }
+        } else {
+            sprintf(title_buffer, "Conway");
+            conway_update(&conway, GetFrameTime());
         }
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {

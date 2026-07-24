@@ -28,9 +28,12 @@ $ make clean
 
 # Usage
 
-- Press `SPACE` to pause the simulation
-- Draw using mouse (press and hold left mouse button, move mouse around)
-- Press `SPACE` again to resume the simulation
+| Key/Button   | Action                 |
+| ------------ | ---------------------- |
+| `SPACE`      | Toggle pause           |
+| `F` (or `f`) | Toggle fast forward    |
+| `R` (or `r`) | Reset simulation       |
+| Left Mouse   | Draw (hold to 'paint') |
 
 # Design
 

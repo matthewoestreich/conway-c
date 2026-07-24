@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "raylib.h"
 
@@ -53,6 +54,13 @@ Grid* grid_new(uint32_t rows, uint32_t cols) {
     grid_init_cells(g);
 
     return g;
+}
+
+void grid_reset_empty(Grid* grid) {
+    if (grid == NULL || grid->cells == NULL) {
+        return;
+    }
+    memset(grid->cells, 0, sizeof(Cell) * grid->size);
 }
 
 static size_t grid_index(const Grid* g, uint32_t x, uint32_t y) {

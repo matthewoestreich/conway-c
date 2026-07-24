@@ -18,6 +18,8 @@ Cell* conway_clicked(Conway* conway, const Vector2 clicked_pos) {
     return grid_cell_from_coords(conway->grid, x, y);
 }
 
+void conway_reset(Conway* conway) { grid_reset_empty(conway->grid); }
+
 void conway_update(Conway* conway, const float delta_time) {
     conway->timer -= delta_time;
 
