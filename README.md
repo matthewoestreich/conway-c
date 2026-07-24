@@ -10,15 +10,20 @@
 
 # Build
 
-**Only works on MacOS as of now** (feel free to download the correct Raylib version and modify the build script, though)
+- Requires `cmake` (minimum version 3.25) and `make`
+- **Should** work on MacOS, Linux, and Windows. I have only tested on MacOS.
 
 ```bash
 # From project root
 
-# Build project
-$ ./build.sh
-# Run executable
+# Generate build files into a 'build' folder
+$ make setup
+# Compile the project
+$ make build
+# Run the executable
 $ ./build/main
+# Remove build folder
+$ make clean
 ```
 
 # Usage

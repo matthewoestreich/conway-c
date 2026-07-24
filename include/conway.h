@@ -2,7 +2,6 @@
 #define CONWAY_H
 
 #include "grid.h"
-#include "options.h"
 #include "raylib.h"
 
 typedef struct {
