@@ -22,22 +22,22 @@ Viewport viewport_new(int32_t x, int32_t y, int32_t width, int32_t height,
         .height = height,
         .cols = cols,
         .rows = rows,
-        .cell_size =
-            (Vector2){.x = width / (float)cols, .y = height / (float)rows},
+        .cell_size = (Vector2){.x = (float)width / (float)cols,
+                               .y = (float)height / (float)rows},
     };
 }
 
 Vector2 viewport_grid_to_world(Viewport* vp, Vector2* grid_pos) {
-    return (Vector2){.x = vp->x + (grid_pos->x * vp->cell_size.x),
-                     .y = vp->y + (grid_pos->y * vp->cell_size.y)};
+    return (Vector2){.x = (float)vp->x + (grid_pos->x * vp->cell_size.x),
+                     .y = (float)vp->y + (grid_pos->y * vp->cell_size.y)};
 }
 
 OptionVector2 viewport_world_to_cell(Viewport* vp, Vector2 world_pos) {
-    float local_x = world_pos.x - vp->x;
-    float local_y = world_pos.y - vp->y;
+    float local_x = world_pos.x - (float)vp->x;
+    float local_y = world_pos.y - (float)vp->y;
 
-    if (local_x < 0.0f || local_x >= vp->width || local_y < 0.0f ||
-        local_y >= vp->height) {
+    if (local_x < 0.0F || local_x >= (float)vp->width || local_y < 0.0F ||
+        local_y >= (float)vp->height) {
         return NONE_VECTOR2;
     }
 
@@ -47,8 +47,12 @@ OptionVector2 viewport_world_to_cell(Viewport* vp, Vector2 world_pos) {
 }
 
 bool viewport_is_within_bounds(Viewport* vp, Vector2* pos) {
-    return pos->x >= vp->x && pos->x <= (vp->x + vp->width) &&
-           pos->y >= vp->y && pos->y <= (vp->y + vp->height);
+    float vp_x = (float)vp->x;
+    float vp_y = (float)vp->y;
+    float vp_width = (float)vp->width;
+    float vp_height = (float)vp->height;
+    return (pos->x >= vp_x && pos->x <= (vp_x + vp_width) && pos->y >= vp_y &&
+            pos->y <= (vp_y + vp_height)) != 0;
 }
 
 // ------------------------------------
@@ -61,7 +65,7 @@ void renderer_draw_cells(Renderer* renderer, Grid* grid) {
     for (size_t i = 0; i < grid->size; ++i) {
         Cell* c = &grid->cells[i];
 
-        Color color = cell_is_curr_gen_alive(c) ? WHITE : BLACK;
+        Color color = (int)cell_is_curr_gen_alive(c) ? WHITE : BLACK;
         Vector2 cell_pos = grid_get_cell_coords_from_raw_index(grid, i);
         Vector2 pos = viewport_grid_to_world(&renderer->viewport, &cell_pos);
 
@@ -72,7 +76,7 @@ void renderer_draw_cells(Renderer* renderer, Grid* grid) {
 }
 
 void renderer_draw_grid_border(Renderer* renderer) {
-    float thickness = 1.0f;
+    float thickness = 1.0F;
     Color line_color = GRAY;
     float width =
         (float)renderer->viewport.cols * renderer->viewport.cell_size.x;
@@ -82,8 +86,8 @@ void renderer_draw_grid_border(Renderer* renderer) {
     // Draw the overall bounding rectangle using the viewport origin
     DrawRectangleLinesEx(
         (Rectangle){
-            .x = renderer->viewport.x,
-            .y = renderer->viewport.y,
+            .x = (float)renderer->viewport.x,
+            .y = (float)renderer->viewport.y,
             .width = width,
             .height = height,
         },
@@ -91,19 +95,19 @@ void renderer_draw_grid_border(Renderer* renderer) {
 
     // Draw vertical lines
     for (uint32_t col = 0; col <= renderer->viewport.cols; ++col) {
-        float x_pos = renderer->viewport.x +
+        float x_pos = (float)renderer->viewport.x +
                       ((float)col * renderer->viewport.cell_size.x);
-        Vector2 start = {.x = x_pos, .y = renderer->viewport.y};
-        Vector2 end = {.x = x_pos, .y = renderer->viewport.y + height};
+        Vector2 start = {.x = x_pos, .y = (float)renderer->viewport.y};
+        Vector2 end = {.x = x_pos, .y = (float)renderer->viewport.y + height};
         DrawLineEx(start, end, thickness, line_color);
     }
 
     // Draw horizontal lines
     for (uint32_t row = 0; row <= renderer->viewport.rows; ++row) {
-        float y_pos = renderer->viewport.y +
+        float y_pos = (float)renderer->viewport.y +
                       ((float)row * renderer->viewport.cell_size.y);
-        Vector2 start = {.x = renderer->viewport.x, .y = y_pos};
-        Vector2 end = {.x = renderer->viewport.x + width, .y = y_pos};
+        Vector2 start = {.x = (float)renderer->viewport.x, .y = y_pos};
+        Vector2 end = {.x = (float)renderer->viewport.x + width, .y = y_pos};
         DrawLineEx(start, end, thickness, line_color);
     }
 }

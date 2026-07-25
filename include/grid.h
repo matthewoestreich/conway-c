@@ -41,6 +41,6 @@ Vector2 grid_get_cell_coords_from_raw_index(Grid* g, size_t raw_index);
 
 void grid_drop(Grid* g);
 
-uint32_t grid_alive_neighbors_len(Grid* g, const size_t raw_cell_index);
+uint32_t grid_alive_neighbors_len(Grid* g, size_t raw_cell_index);
 
 #endif  // GRID_H

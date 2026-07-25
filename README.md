@@ -21,7 +21,7 @@ $ make setup
 # Compile the project
 $ make build
 # Run the executable
-$ ./build/main
+$ make run
 # Remove build folder
 $ make clean
 ```

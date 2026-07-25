@@ -11,18 +11,29 @@
 Cell cell_new(bool is_alive) { return (Cell)is_alive; }
 
 void cell_set_curr_gen_alive(Cell* cell, bool is_alive) {
-    *cell = (*cell & CELL_MASK_CLEAR_CURR) | is_alive;
+    assert(cell != NULL);
+    *cell = (*cell & CELL_MASK_CLEAR_CURR) | (int)is_alive;
 }
 
 void cell_set_next_gen_alive(Cell* cell, bool is_alive) {
-    *cell = (*cell & CELL_MASK_CLEAR_NEXT) | (is_alive << 1);
+    assert(cell != NULL);
+    *cell = (*cell & CELL_MASK_CLEAR_NEXT) | ((int)is_alive << 1);
 }
 
-bool cell_is_curr_gen_alive(const Cell* c) { return *c & CELL_MASK_READ_CURR; }
+bool cell_is_curr_gen_alive(const Cell* cell) {
+    assert(cell != NULL);
+    return (*cell & CELL_MASK_READ_CURR) != 0;
+}
 
-void cell_advance_gen(Cell* cell) { *cell >>= 1; }
+void cell_advance_gen(Cell* cell) {
+    assert(cell != NULL);
+    bool next_alive = (*cell & CELL_MASK_READ_NEXT) != 0;
+    cell_set_curr_gen_alive(cell, next_alive);
+}
 
 static void grid_init_cells(Grid* g) {
+    assert(g != NULL && g->cells != NULL);
+
     for (size_t y = 0; y < g->rows; ++y) {
         for (size_t x = 0; x < g->cols; ++x) {
             size_t index = (y * g->cols) + x;
@@ -39,7 +50,7 @@ Grid* grid_new(uint32_t rows, uint32_t cols) {
         return NULL;
     }
 
-    size_t size = (rows * cols);
+    size_t size = ((size_t)(rows * cols));
 
     g->rows = rows;
     g->cols = cols;
@@ -68,10 +79,11 @@ static size_t grid_index(const Grid* g, uint32_t x, uint32_t y) {
 }
 
 Vector2 grid_get_cell_coords_from_raw_index(Grid* g, size_t raw_index) {
+    assert(g != NULL);
     size_t width = (size_t)g->cols;
     size_t x = raw_index % width;
     size_t y = raw_index / width;
-    return (Vector2){.x = x, .y = y};
+    return (Vector2){.x = (float)x, .y = (float)y};
 }
 
 Cell* grid_cell_from_coords(Grid* g, uint32_t x, uint32_t y) {
@@ -89,10 +101,12 @@ void grid_drop(Grid* g) {
 }
 
 /// Gets the CURRENT GEN alive neighbors
-uint32_t grid_alive_neighbors_len(Grid* g, const size_t raw_cell_index) {
+uint32_t grid_alive_neighbors_len(Grid* g, size_t raw_cell_index) {
+    assert(g != NULL);
+
     Vector2 cell_pos = grid_get_cell_coords_from_raw_index(g, raw_cell_index);
-    int pos_x = cell_pos.x;
-    int pos_y = cell_pos.y;
+    int pos_x = (int)cell_pos.x;
+    int pos_y = (int)cell_pos.y;
 
     uint32_t alive_neighbors = 0;
 
@@ -103,7 +117,7 @@ uint32_t grid_alive_neighbors_len(Grid* g, const size_t raw_cell_index) {
             }
 
             Cell* neighbor = grid_cell_from_coords(g, (uint32_t)x, (uint32_t)y);
-            if (neighbor != NULL && cell_is_curr_gen_alive(neighbor)) {
+            if (neighbor != NULL && (int)cell_is_curr_gen_alive(neighbor)) {
                 alive_neighbors++;
             }
         }

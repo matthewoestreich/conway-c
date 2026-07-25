@@ -23,7 +23,7 @@ void conway_reset(Conway* conway) { grid_reset_empty(conway->grid); }
 void conway_update(Conway* conway, const float delta_time) {
     conway->timer -= delta_time;
 
-    if (conway->timer > 0.0f) {
+    if (conway->timer > 0.0F) {
         return;
     }
 
@@ -34,7 +34,7 @@ void conway_update(Conway* conway, const float delta_time) {
 
         if (cell_is_curr_gen_alive(cell)) {
             // If a cell that is alive has 2 or 3 alive neighbors it survives.
-            bool survives = alive_neighbors == 2 || alive_neighbors == 3;
+            bool survives = (alive_neighbors == 2 || alive_neighbors == 3) != 0;
             // IMPORTANT : set the next generation bit!!!
             cell_set_next_gen_alive(cell, survives);
         } else {

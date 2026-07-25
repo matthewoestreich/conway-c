@@ -1,6 +1,8 @@
+If:
+  PathExclude: vendor/.*
+
 Index:
   Background: Build
-
 CompileFlags:
   CompilationDatabase: "build"
   Add:
@@ -10,10 +12,14 @@ CompileFlags:
     - -Wunused-parameter
     - -Wunused-function
     - -Wunused-member-function
-
 Diagnostics:
   ClangTidy:
-    Add: [readability-non-const-parameter]
+    Add:
+      - readability-*
+      - bugprone-*
+    Remove:
+      - readability-identifier-length
+      - readability-function-cognitive-complexity
     CheckOptions:
       misc-const-correctness.AnalyzeValues: true
       misc-const-correctness.AnalyzeReferences: true
