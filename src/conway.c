@@ -29,10 +29,8 @@ void conway_update(Conway* conway, const float delta_time) {
 
     for (size_t i = 0; i < conway->grid->size; ++i) {
         Cell* cell = &conway->grid->cells[i];
-        // IMPORTANT : Reads from current generation bit.
         uint32_t alive_neighbors = grid_alive_neighbors_len(conway->grid, i);
         bool alive = cell_is_curr_gen_alive(cell);
-        // If a cell that is alive has 2 or 3 alive neighbors it survives.
         bool survives =
             (((int)alive && (alive_neighbors == 2 || alive_neighbors == 3)) ||
              (!alive && alive_neighbors == 3)) != 0;
