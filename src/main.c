@@ -101,9 +101,7 @@ int main() {
 
         BeginDrawing();
         ClearBackground(BLACK);
-
         renderer_draw(&renderer, &conway);
-
         EndDrawing();
     }
 
